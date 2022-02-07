@@ -11,8 +11,8 @@ public class Server {
     private static Socket socket;
 
     private static final int PORT = 8189;
-    private List<ClientHandler> clients;
-    private AuthService authService;
+    private final List<ClientHandler> clients;
+    private final AuthService authService;
 
     public Server() {
         clients = new CopyOnWriteArrayList<>();
@@ -25,7 +25,7 @@ public class Server {
             while(true){
                 socket = server.accept();
                 System.out.println(socket.getLocalSocketAddress());
-                System.out.println("Client connect: "+ socket.getRemoteSocketAddress());
+                System.out.println("Client connected: "+ socket.getRemoteSocketAddress());
                 new ClientHandler(this, socket);
             }
 
@@ -52,19 +52,19 @@ public class Server {
         }
     }
 
-    public void privateMsg(ClientHandler sender, String reciever, String msg) {
+    public void privateMsg(ClientHandler sender, String receiver, String msg) {
         String message = String.format("%s : %s", sender.getNickname(), msg);
         sender.sendMsg(message);
 
-        if (sender.getNickname().equalsIgnoreCase(reciever)) { return; } //Сообщение самому себе, выходим
+        if (sender.getNickname().equalsIgnoreCase(receiver)) { return; } //Сообщение самому себе, выходим
 
         for (ClientHandler c : clients) {
-            if (c.getNickname().equalsIgnoreCase(reciever)) {
+            if (c.getNickname().equalsIgnoreCase(receiver)) {
                 c.sendMsg(message);
                 return;
             }
         }
-        sender.sendMsg("Пользователь " + reciever + " не подключился");
+        sender.sendMsg("Пользователь " + receiver + " не подключился");
     }
 
     public void subscribe(ClientHandler clientHandler){
@@ -82,7 +82,7 @@ public class Server {
     }
 
     public void broadcastClientList() {
-        StringBuilder sb = new StringBuilder("/userlist");
+        StringBuilder sb = new StringBuilder("/userList");
         for (ClientHandler c : clients) {
             sb.append(" ").append(c.getNickname());
         }
@@ -100,7 +100,6 @@ public class Server {
                 return true;
             }
         }
-
         return false;
     }
 }

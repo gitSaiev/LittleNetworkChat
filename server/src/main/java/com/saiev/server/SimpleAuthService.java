@@ -17,7 +17,7 @@ public class SimpleAuthService implements AuthService{
         }
     }
 
-    private List<UserData> users;
+    private final List<UserData> users;
 
     public SimpleAuthService() {
         users = new ArrayList<>();

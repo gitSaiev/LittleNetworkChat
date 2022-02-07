@@ -24,7 +24,6 @@ public class ClientHandler {
 
             new Thread(() -> {
                 try {
-
                     socket.setSoTimeout(120000);
 
                     // цикл аутентификации
@@ -55,7 +54,6 @@ public class ClientHandler {
                                             " Address: " + socket.getRemoteSocketAddress());
 
                                     socket.setSoTimeout(0);
-
                                     break;
                                 } else {
                                     sendMsg("С этим логином уже авторизовались");
@@ -79,7 +77,6 @@ public class ClientHandler {
                                 sendMsg("/reg_no");
                             }
                         }
-
                     }
 
                     //цикл работы
@@ -118,7 +115,7 @@ public class ClientHandler {
                         }
                     }
 
-                } catch(SocketTimeoutException e) {
+                } catch (SocketTimeoutException e) {
                     try {
                         out.writeUTF("/end"); //Клиент слишком долго молчал, отключаем его
                     } catch (IOException ioException) {
@@ -128,7 +125,7 @@ public class ClientHandler {
                     e.printStackTrace();
                 } finally {
                     server.unsubscribe(this);
-                    System.out.println("client disconnect " + socket.getRemoteSocketAddress());
+                    System.out.println("client disconnected " + socket.getRemoteSocketAddress());
                     try {
                         socket.close();
                     } catch (IOException e) {
@@ -136,7 +133,6 @@ public class ClientHandler {
                     }
                 }
             }).start();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

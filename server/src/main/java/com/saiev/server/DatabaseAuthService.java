@@ -9,19 +9,19 @@ public class DatabaseAuthService implements AuthService {
 
     private void connect() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:server/chatusers.db");
+        connection = DriverManager.getConnection("jdbc:sqlite:server/chatUsers.db");
     }
 
     private void disconnect() {
         try {
             preparedStatement.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         try {
             connection.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 
@@ -59,7 +59,7 @@ public class DatabaseAuthService implements AuthService {
                 int userFound = 0;
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
-                    userFound = rs.getInt("usrs");
+                    userFound = rs.getInt("users");
                 }
                 if (userFound > 0) {
                     return false;
