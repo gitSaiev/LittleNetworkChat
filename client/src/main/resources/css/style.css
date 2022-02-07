@@ -1,0 +1,6 @@
+@import "buttons.css";
+@import "textarea.css";
+
+.root{
+    -fx-font-size: 16;
+}
